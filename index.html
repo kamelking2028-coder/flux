@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Flux – Générateur IA</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
 
   <style>
     body {
@@ -80,6 +82,11 @@
 </head>
 
 <body>
+  <script>
+  if ("serviceWorker" in navigator) {
+     navigator.serviceWorker.register("service-worker.js");
+  }
+  </script>
 
   <!-- LOADER UNIQUE -->
   <div id="loader"></div>
