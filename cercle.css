@@ -1,6 +1,129 @@
+/* --- FOND GLOBAL FLUX IA --- */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #000428;
+  background-image: linear-gradient(160deg, #000428 0%, #001f33 100%);
+  color: #e0f7ff;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
+
+/* --- TITRE --- */
+h1 {
+  color: #00eaff;
+  font-size: 2.2em;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+}
+
+/* --- INPUT TEXTE --- */
+input[type="text"] {
+  background-color: #001f33;
+  color: #00eaff;
+  border: 2px solid #00eaff;
+  border-radius: 8px;
+  padding: 10px;
+  width: 240px;
+  font-size: 1em;
+  outline: none;
+  transition: 0.3s;
+}
+
+input[type="text"]:focus {
+  box-shadow: 0 0 10px #00eaff;
+}
+
+/* --- SELECT (styles IA) --- */
+select {
+  background-color: #001f33;
+  color: #00eaff;
+  border: 2px solid #00eaff;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+select:hover {
+  box-shadow: 0 0 10px #00eaff;
+}
+
+/* --- BOUTONS --- */
+button,
+input[type="button"],
+input[type="submit"] {
+  background-color: #00eaff;
+  color: #001f33;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 5px;
+  box-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  background-color: #00c8d9;
+  transform: scale(1.05);
+}
+
+/* --- BOUTONS COPIE --- */
+#copyPromptBtn,
+#copyImageBtn {
+  background: #00aaff;
+  color: white;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 10px;
+}
+
+#copyPromptBtn:hover,
+#copyImageBtn:hover {
+  background: #0088cc;
+}
+
+/* --- IMAGE RESULTAT --- */
+img {
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  margin-top: 20px;
+}
+
+/* Apparition progressive */
+#result {
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+#result.visible {
+  opacity: 1;
+}
+
+/* --- BOUTON TELECHARGEMENT --- */
+#downloadBtn {
+  display: none;
+  margin-top: 15px;
+  padding: 10px 15px;
+  background: #00eaff;
+  color: #001f33;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  box-shadow: 0 0 10px #00eaff;
+}
+
+#downloadBtn:hover {
+  background: #00c8d9;
+}
+
 /* --- LOADER MULTICOLORE --- */
 #loader {
-  color: #ffffff;
   display: none;
   width: 55px;
   height: 55px;
@@ -25,7 +148,7 @@
   100% { box-shadow: 0 0 10px #ff00ff; border-top-color: #ff00ff; }
 }
 
-/* Texte animé */
+/* Texte animé du loader */
 .loading-text {
   font-size: 16px;
   color: #00eaff;
@@ -38,96 +161,10 @@
   100% { opacity: 1; }
 }
 
-/* --- DESIGN FLUX IA --- */
-body {
-  font-family: 'Poppins', sans-serif;
-  background: #000428;
-  background-image: linear-gradient(160deg, #000428 0%, #001f33 100%);
-  color: #e0f7ff;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-/* Boutons */
-button,
-select,
-input[type="button"],
-input[type="submit"] {
-  background-color: #00eaff;
-  color: #001f33;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
-}
-
-button:hover,
-select:hover,
-input[type="button"]:hover,
-input[type="submit"]:hover {
-  background-color: #00c8d9;
-  transform: scale(1.05);
-}
-
-/* Inputs */
-input[type="text"] {
-  background-color: #001f33;
-  color: #00eaff;
-  border: 2px solid #00eaff;
-  border-radius: 8px;
-  padding: 10px;
-  width: 220px;
-  font-size: 1em;
-  outline: none;
-  transition: 0.3s;
-}
-
-input[type="text"]:focus {
-  box-shadow: 0 0 10px #00eaff;
-}
-
-/* Image */
-img {
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-}
-
-/* Apparition image */
-#result {
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out;
-}
-
-#result.visible {
-  opacity: 1;
-}
-
-/* Boutons copier */
-#copyPromptBtn,
-#copyImageBtn {
-  padding: 8px 12px;
-  background: #00aaff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-#copyPromptBtn:hover,
-#copyImageBtn:hover {
-  background: #0088cc;
-}
-
-/* --- MOBILE --- */
+/* --- RESPONSIVE MOBILE --- */
 @media (max-width: 625px) {
-  body {
-    background: #000033;
-    color: #e0f7ff;
+  h1 {
+    font-size: 1.6em;
   }
   input[type="text"] {
     width: 180px;
@@ -137,3 +174,4 @@ img {
     font-size: 0.9em;
   }
 }
+
