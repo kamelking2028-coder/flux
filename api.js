@@ -1,12 +1,12 @@
-console.log("api.js chargé !");
+console.log("api.js chargÃ© !");
 
 // --- COPIER IMAGE EN BASE64 ---
 document.getElementById("copyImageBtn").addEventListener("click", () => {
   const img = document.getElementById("result");
 
   if (!img.src) {
-    alert("Aucune image à copier !");
-    return;
+    alert("Aucune image Ã  copier !");
+    return; 
   }
 
   const canvas = document.createElement("canvas");
@@ -48,7 +48,7 @@ document.getElementById("copyPromptBtn").addEventListener("click", () => {
   });
 });
 
-// --- GÉNÉRER IMAGE ---
+// --- GÃ‰NÃ‰RER IMAGE ---
 document.getElementById("btn").addEventListener("click", () => {
   const prompt = document.getElementById("prompt").value.trim();
   const loader = document.getElementById("loader");
@@ -57,7 +57,7 @@ document.getElementById("btn").addEventListener("click", () => {
   const style = document.getElementById("style").value;
 
   if (!prompt) {
-    alert("Écris une description avant de générer !");
+    alert("Ã‰cris une description avant de gÃ©nÃ©rer !");
     return;
   }
 
@@ -78,7 +78,7 @@ document.getElementById("btn").addEventListener("click", () => {
   img.onerror = () => {
     loader.style.display = "none";
     loadingText.style.display = "none";
-    alert("Erreur de génération. Réessaie !");
+    alert("Erreur de gÃ©nÃ©ration. RÃ©essaie !");
   };
 
   img.src = url;
