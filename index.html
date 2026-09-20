@@ -3,106 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <title>Flux – Générateur IA</title>
+
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#000000">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #000033;
-      padding: 20px;
-    }
- 
-    h1 {
-      color:#0000ff;
-      margin-bottom: 20px;
-    }
-
-    input, select, button {
-      color:#0000ff; 
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    /* --- LOADER MULTICOLORE --- */
-    #loader {
-      display: none;
-      width: 55px;
-      height: 55px;
-      border: 6px solid transparent;
-      border-top-color: #ff00ff;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite, rainbowGlow 2s ease-in-out infinite;
-      margin: 20px auto;  
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes rainbowGlow {
-      0%   { box-shadow: 0 0 10px #ff00ff; border-top-color: #ff00ff; }
-      25%  { box-shadow: 0 0 10px #00eaff; border-top-color: #00eaff; }
-      50%  { box-shadow: 0 0 10px #00ff6a; border-top-color: #00ff6a; }
-      75%  { box-shadow: 0 0 10px #ffea00; border-top-color: #ffea00; }
-      100% { box-shadow: 0 0 10px #ff00ff; border-top-color: #ff00ff; }
-    }
-
-    .loading-text {
-      font-size: 16px;
-      color: #00eaff;
-      animation: blink 1.2s infinite;
-    }
-
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0.3; }
-      100% { opacity: 1; }
-    }
-
-    #result {
-      margin-top: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      max-width: 90%;
-    }
-
-    #downloadBtn {
-      display: none;
-      margin-top: 15px;
-      padding: 10px 15px;
-      background: #0078ff;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-    }
-  </style>
+  <!-- TON CSS EXTERNE -->
+  <link rel="stylesheet" href="cercle.css">
 </head>
 
 <body>
+
+  <!-- Service Worker -->
   <script>
-  if ("serviceWorker" in navigator) {
-     navigator.serviceWorker.register("service-worker.js");
-  }
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
   </script>
 
-  <!-- LOADER UNIQUE -->
+  <!-- LOADER -->
   <div id="loader"></div>
   <p class="loading-text" id="loadingText" style="display:none;">Génération en cours…</p>
 
   <h1>Générer une image IA By KML MHALLA</h1>
 
+  <!-- PROMPT -->
   <input id="prompt" type="text" placeholder="Décris ton image...">
+
+  <!-- COPIE PROMPT -->
   <button id="copyPromptBtn">Copier le prompt</button>
   <span id="copyStatus" style="display:none; color:green;">Copié !</span>
+
+  <!-- COPIE IMAGE -->
   <button id="copyImageBtn">Copier l’image (base64)</button>
   <span id="copyImageStatus" style="display:none; color:green;">Copié !</span>
 
-
+  <!-- STYLE IA -->
   <select id="style">
     <option value="realistic">Réaliste</option>
     <option value="anime">Anime</option>
@@ -111,13 +47,19 @@
     <option value="fantasy">Fantasy</option>
   </select>
 
+  <!-- BOUTON GENERER -->
   <button id="btn">Générer</button>
+
+  <!-- IMAGE RESULTAT -->
   <img id="result" width="512" crossOrigin="anonymous">
 
-  
-
+  <!-- TELECHARGEMENT -->
   <a id="downloadBtn" download="flux_image.png">Télécharger l’image</a>
 
+  <!-- SCRIPT IA -->
   <script src="api.js"></script>
+
 </body>
 </html>
+
+
