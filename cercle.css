@@ -175,9 +175,11 @@ img {
   }
 }
 /* --- Correction du bouton Télécharger --- */
+/* --- Bouton Télécharger repositionné --- */
 #downloadBtn {
-  display: inline-block; /* pour qu’il s’aligne sans se faire écraser */
-  margin-top: 25px;      /* espace sous les autres boutons */
+  position: relative;
+  display: block;
+  margin: 25px auto 40px auto; /* centré et espacé sous l’image */
   padding: 10px 18px;
   background: #00eaff;
   color: #001f33;
@@ -186,7 +188,13 @@ img {
   font-weight: 600;
   box-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
   transition: 0.3s;
+  z-index: 10; /* passe au-dessus de l’image */
 }
+#downloadBtn:hover {
+  background: #00c8d9;
+  transform: scale(1.05);
+}
+
 
 #downloadBtn:hover {
   background: #00c8d9;
