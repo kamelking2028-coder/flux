@@ -85,7 +85,7 @@ img {
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 @media (max-width: 625px) {
-
+      color: #000fff;
       padding: 18px;
       margin: 10px;
       font-size: 28px;
