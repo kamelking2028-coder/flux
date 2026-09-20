@@ -1,0 +1,71 @@
+/* --- LOADER MULTICOLORE --- */
+#loader {
+  display: none;
+  width: 55px;
+  height: 55px;
+  border: 6px solid transparent;
+  border-top-color: #ff00ff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite, rainbowGlow 2s ease-in-out infinite;
+  margin: 20px auto;
+}
+
+/* Rotation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Glow multicolore */
+@keyframes rainbowGlow {
+  0%   { box-shadow: 0 0 10px #ff00ff; border-top-color: #ff00ff; }
+  25%  { box-shadow: 0 0 10px #00eaff; border-top-color: #00eaff; }
+  50%  { box-shadow: 0 0 10px #00ff6a; border-top-color: #00ff6a; }
+  75%  { box-shadow: 0 0 10px #ffea00; border-top-color: #ffea00; }
+  100% { box-shadow: 0 0 10px #ff00ff; border-top-color: #ff00ff; }
+}
+
+/* Texte animé */
+.loading-text {
+  font-size: 16px;
+  color: #00eaff;
+  animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+#result {
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+#result.visible {
+  opacity: 1;
+}
+#copyPromptBtn {
+  padding: 8px 12px;
+  background: #00aaff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#copyPromptBtn:hover {
+  background: #0088cc;
+}
+#copyImageBtn {
+  padding: 8px 12px;
+  background: #00aaff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#copyImageBtn:hover {
+  background: #0088cc;
+}
