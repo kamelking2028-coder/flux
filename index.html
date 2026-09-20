@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Flux – Générateur IA</title>
+  <title>Flux â€“ GÃ©nÃ©rateur IA</title>
 
   <style>
     body {
@@ -33,7 +33,7 @@
       border-top-color: #ff00ff;
       border-radius: 50%;
       animation: spin 0.8s linear infinite, rainbowGlow 2s ease-in-out infinite;
-      margin: 20px auto;
+      margin: 20px auto;  
     }
 
     @keyframes spin {
@@ -83,31 +83,31 @@
 
   <!-- LOADER UNIQUE -->
   <div id="loader"></div>
-  <p class="loading-text" id="loadingText" style="display:none;">Génération en cours…</p>
+  <p class="loading-text" id="loadingText" style="display:none;">GÃ©nÃ©ration en coursâ€¦</p>
 
-  <h1>Générer une image IA</h1>
+  <h1>GÃ©nÃ©rer une image IA</h1>
 
-  <input id="prompt" type="text" placeholder="Décris ton image...">
+  <input id="prompt" type="text" placeholder="DÃ©cris ton image...">
   <button id="copyPromptBtn">Copier le prompt</button>
-  <span id="copyStatus" style="display:none; color:green;">Copié !</span>
-  <button id="copyImageBtn">Copier l’image (base64)</button>
-  <span id="copyImageStatus" style="display:none; color:green;">Copié !</span>
+  <span id="copyStatus" style="display:none; color:green;">CopiÃ© !</span>
+  <button id="copyImageBtn">Copier lâ€™image (base64)</button>
+  <span id="copyImageStatus" style="display:none; color:green;">CopiÃ© !</span>
 
 
   <select id="style">
-    <option value="realistic">Réaliste</option>
+    <option value="realistic">RÃ©aliste</option>
     <option value="anime">Anime</option>
     <option value="cartoon">Cartoon</option>
     <option value="cyberpunk">Cyberpunk</option>
     <option value="fantasy">Fantasy</option>
   </select>
 
-  <button id="btn">Générer</button>
+  <button id="btn">GÃ©nÃ©rer</button>
   <img id="result" width="512" crossOrigin="anonymous">
 
   
 
-  <a id="downloadBtn" download="flux_image.png">Télécharger l’image</a>
+  <a id="downloadBtn" download="flux_image.png">TÃ©lÃ©charger lâ€™image</a>
 
   <script src="api.js"></script>
 </body>
