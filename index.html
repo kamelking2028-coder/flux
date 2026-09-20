@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Flux – Générateur IA</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    /* --- LOADER MULTICOLORE --- */
+    #loader {
+      display: none;
+      width: 55px;
+      height: 55px;
+      border: 6px solid transparent;
+      border-top-color: #ff00ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite, rainbowGlow 2s ease-in-out infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rainbowGlow {
+      0%   { box-shadow: 0 0 10px #ff00ff; border-top-color: #ff00ff; }
+      25%  { box-shadow: 0 0 10px #00eaff; border-top-color: #00eaff; }
+      50%  { box-shadow: 0 0 10px #00ff6a; border-top-color: #00ff6a; }
+      75%  { box-shadow: 0 0 10px #ffea00; border-top-color: #ffea00; }
+      100% { box-shadow: 0 0 10px #ff00ff; border-top-color: #ff00ff; }
+    }
+
+    .loading-text {
+      font-size: 16px;
+      color: #00eaff;
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    #result {
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      max-width: 90%;
+    }
+
+    #downloadBtn {
+      display: none;
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #0078ff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOADER UNIQUE -->
+  <div id="loader"></div>
+  <p class="loading-text" id="loadingText" style="display:none;">Génération en cours…</p>
+
+  <h1>Générer une image IA</h1>
+
+  <input id="prompt" type="text" placeholder="Décris ton image...">
+  <button id="copyPromptBtn">Copier le prompt</button>
+  <span id="copyStatus" style="display:none; color:green;">Copié !</span>
+  <button id="copyImageBtn">Copier l’image (base64)</button>
+  <span id="copyImageStatus" style="display:none; color:green;">Copié !</span>
+
+
+  <select id="style">
+    <option value="realistic">Réaliste</option>
+    <option value="anime">Anime</option>
+    <option value="cartoon">Cartoon</option>
+    <option value="cyberpunk">Cyberpunk</option>
+    <option value="fantasy">Fantasy</option>
+  </select>
+
+  <button id="btn">Générer</button>
+  <img id="result" width="512" crossOrigin="anonymous">
+
+  
+
+  <a id="downloadBtn" download="flux_image.png">Télécharger l’image</a>
+
+  <script src="api.js"></script>
+</body>
+</html>
