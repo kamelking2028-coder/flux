@@ -73,15 +73,36 @@ document.getElementById("btn").addEventListener("click", () => {
     loader.style.display = "none";
     loadingText.style.display = "none";
     img.classList.add("visible");
+    // 👉 Le bouton devient cliquable et visible ici
+    document.getElementById("downloadBtn").style.display = "inline-block";
   };
 
   img.onerror = () => {
     loader.style.display = "none";
     loadingText.style.display = "none";
     alert("Erreur de génération. Réessaie !");
+    // 👉 On cache le bouton si l’image n’a pas été générée
+    document.getElementById("downloadBtn").style.display = "none";
   };
 
   img.src = url;
+});
+// --- TÉLÉCHARGER L’IMAGE ---
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const img = document.getElementById("result");
+
+  if (!img.src) {
+    alert("Aucune image à télécharger !");
+    return;
+  }
+
+  // Créer un lien temporaire pour le téléchargement
+  const link = document.createElement("a");
+  link.href = img.src;
+  link.download = "flux_image.png"; // nom du fichier
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 });
 
 
