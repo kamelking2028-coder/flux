@@ -11,33 +11,6 @@
   margin: 20px auto;
 }
 
-/*--fond des boutons--*/
-button {
-  box-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
-}
-button,
-select,
-input[type="button"],
-input[type="submit"] {
-  background-color: #00eaff;
-  color: #001f33; /* texte foncé pour contraste */
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover,
-select:hover,
-input[type="button"]:hover,
-input[type="submit"]:hover {
-  background-color: #00c8d9; /* effet hover plus foncé */
-  transform: scale(1.05);
-}
-
- 
 /* Rotation */
 @keyframes spin {
   to { transform: rotate(360deg); }
@@ -64,6 +37,66 @@ input[type="submit"]:hover {
   50% { opacity: 0.3; }
   100% { opacity: 1; }
 }
+
+/* --- DESIGN FLUX IA --- */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #000428;
+  background-image: linear-gradient(160deg, #000428 0%, #001f33 100%);
+  color: #e0f7ff;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Boutons */
+button,
+select,
+input[type="button"],
+input[type="submit"] {
+  background-color: #00eaff;
+  color: #001f33;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+}
+
+button:hover,
+select:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  background-color: #00c8d9;
+  transform: scale(1.05);
+}
+
+/* Inputs */
+input[type="text"] {
+  background-color: #001f33;
+  color: #00eaff;
+  border: 2px solid #00eaff;
+  border-radius: 8px;
+  padding: 10px;
+  width: 220px;
+  font-size: 1em;
+  outline: none;
+  transition: 0.3s;
+}
+
+input[type="text"]:focus {
+  box-shadow: 0 0 10px #00eaff;
+}
+
+/* Image */
+img {
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+/* Apparition image */
 #result {
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
@@ -72,18 +105,9 @@ input[type="submit"]:hover {
 #result.visible {
   opacity: 1;
 }
-#copyPromptBtn {
-  padding: 8px 12px;
-  background: #00aaff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
 
-#copyPromptBtn:hover {
-  background: #0088cc;
-}
+/* Boutons copier */
+#copyPromptBtn,
 #copyImageBtn {
   padding: 8px 12px;
   background: #00aaff;
@@ -94,30 +118,22 @@ input[type="submit"]:hover {
   margin-top: 10px;
 }
 
+#copyPromptBtn:hover,
 #copyImageBtn:hover {
   background: #0088cc;
 }
-body {
-  font-family: 'Poppins', sans-serif;
-  background: #f8f9fa;
-  text-align: center;
-}
-input, button, select {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-img {
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-@media (max-width: 625px) {
-      background: #000033;
-      color: #000fff;
-      padding: 18px;
-      margin: 10px;
-      font-size: 28px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-}
 
+/* --- MOBILE --- */
+@media (max-width: 625px) {
+  body {
+    background: #000033;
+    color: #e0f7ff;
+  }
+  input[type="text"] {
+    width: 180px;
+  }
+  button {
+    padding: 8px 14px;
+    font-size: 0.9em;
+  }
+}
