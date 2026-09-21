@@ -179,6 +179,34 @@ img {
     padding: 8px 14px;
     font-size: 0.9em;
   }
+
+@media (max-width: 625px) {
+  button,
+  #btn,
+  #copyPromptBtn,
+  #copyImageBtn,
+  #downloadBtn {
+    width: 90%;
+    padding: 15px;
+    font-size: 1.2em;
+    border-radius: 12px;
+    margin: 10px auto;
+    display: block;
+  }
+
+  input#prompt {
+    width: 90%;
+    padding: 14px;
+    font-size: 1.2em;
+  }
+
+  select#style {
+    width: 90%;
+    padding: 12px;
+    font-size: 1.2em;
+  }
+}
+
   /* --- INPUT TEXTE --- */
 input[type="text"] {
   background-color: #001f33;
