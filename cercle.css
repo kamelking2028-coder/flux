@@ -209,10 +209,32 @@ input[type="text"] {
 #result.visible {
   animation: zoomPulse 6s ease-in-out infinite;
 }
-
-@keyframes zoomPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+/* --- Effet de mouvement fluide sur l'image générée --- */
+#result.visible {
+  animation: fluxMotion 6s ease-in-out infinite;
 }
+
+@keyframes fluxMotion {
+  0% {
+    transform: scale(1) translateY(0px);
+    filter: brightness(1);
+  }
+  25% {
+    transform: scale(1.03) translateY(-3px);
+    filter: brightness(1.05);
+  }
+  50% {
+    transform: scale(1.05) translateY(0px);
+    filter: brightness(1.1);
+  }
+  75% {
+    transform: scale(1.03) translateY(3px);
+    filter: brightness(1.05);
+  }
+  100% {
+    transform: scale(1) translateY(0px);
+    filter: brightness(1);
+  }
+}
+
 
