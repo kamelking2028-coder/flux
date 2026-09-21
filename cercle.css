@@ -242,5 +242,31 @@ input[type="text"] {
     filter: brightness(1);
   }
 }
+/* --- MENU NÉON FLUXIA --- */
+.flux-menu {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 15px 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  border-bottom: 2px solid #00eaff;
+  box-shadow: 0 0 15px #00eaff;
+}
+
+.flux-menu a {
+  color: #00eaff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1em;
+  text-shadow: 0 0 8px #00eaff;
+  transition: 0.3s;
+}
+
+.flux-menu a:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 12px #ff00ff;
+  transform: scale(1.1);
+}
 
 
