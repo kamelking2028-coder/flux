@@ -1,3 +1,9 @@
+#adHeader, #adFooter {
+  margin: 20px auto;
+  max-width: 90%;
+  text-align: center;
+}
+
 /* --- FOND GLOBAL FLUX IA --- */
 body {
   font-family: 'Poppins', sans-serif;
