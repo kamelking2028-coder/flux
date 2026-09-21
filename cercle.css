@@ -206,4 +206,13 @@ input[type="text"] {
   background: #00c8d9;
   transform: scale(1.05);
 }
+#result.visible {
+  animation: zoomPulse 6s ease-in-out infinite;
+}
+
+@keyframes zoomPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 
