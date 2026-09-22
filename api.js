@@ -83,6 +83,9 @@ document.getElementById("btn").addEventListener("click", async () => {
     --------------------------------------------------------- */
     // Choix du style supplémentaire selon le moteur
 let extra = "";
+if (style === "Réaliste") {
+    extra = ", realistic photo, natural lighting, neutral background, no neon, no glow";
+}
 
 if (style === "Animal") {
   extra = ", animal, realistic animal photo, no human";
