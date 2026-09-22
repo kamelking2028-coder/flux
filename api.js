@@ -97,14 +97,25 @@ if (style === "animal") {
   extra = ", realistic photo, natural lighting, studio portrait, no neon, no glitch";
 }
 
-const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPrompt + extra);
-    
-    
 
 // Construction finale de l’URL
 
 const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPrompt + ", realistic photo, natural lighting, normal human face, no distortion, no zombie, no hybrid");
-    
+ fetch(url)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Erreur serveur Pollinations (" + response.status + ")");
+    }
+    return response.blob();
+  })
+  .then(blob => {
+    img.src = URL.createObjectURL(blob);
+  })
+  .catch(error => {
+    console.error(error);
+    loadingText.textContent = "⚠️ Erreur : impossible de générer l'image.";
+  });
+   
     img.onload = () => {
       loader.style.display = "none";
       loadingText.style.display = "none";
@@ -135,8 +146,6 @@ img.onload = () => {
   img.classList.add("visible", "vibration"); // vibration activée
   document.getElementById("downloadBtn").style.display = "inline-block";
 };
-
-
 
 // --- TÉLÉCHARGER L’IMAGE ---
 document.getElementById("downloadBtn").addEventListener("click", () => {
