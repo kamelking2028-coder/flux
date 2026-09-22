@@ -83,23 +83,23 @@ document.getElementById("btn").addEventListener("click", async () => {
     --------------------------------------------------------- */
     // Choix du style supplémentaire selon le moteur
 let extra = "";
-if (style === "Réaliste") {
-    extra = ", realistic photo, natural lighting, neutral background, no neon, no glow";
+if (style === "animal") {
+  extra = ", animal, realistic animal photo, no human";
+} else if (style === "humain") {
+  extra = ", human only, normal face, realistic portrait, no zombie, no distortion, no hybrid";
+} else if (style === "cyberpunk") {
+  extra = ", cyberpunk style, neon lighting, futuristic background, no zombie";
+} else if (style === "cartoon") {
+  extra = ", cartoon style, colorful, outlined";
+} else if (style === "anime") {
+  extra = ", anime style, detailed, vibrant";
+} else if (style === "realiste") {
+  extra = ", realistic photo, natural lighting, studio portrait, no neon, no glitch";
 }
 
-if (style === "Animal") {
-  extra = ", animal, realistic animal photo, no human";
-} else if (style === "Humain") {
-  extra = ", human only, no animal, portrait, realistic lighting";
-} else if (style === "Cyberpunk") {
-  extra = ", cyberpunk style, neon lighting, futuristic background";
-} else if (style === "Cartoon") {
-  extra = ", cartoon style, colorful, outlined";
-} else if (style === "Anime") {
-  extra = ", anime style, detailed, vibrant";
-} else if (style === "Realisme") {
-  extra = ", realistic photo, high detail, studio lighting";
-}
+const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPrompt + extra);
+    
+    
 
 // Construction finale de l’URL
 
