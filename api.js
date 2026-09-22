@@ -48,104 +48,67 @@ document.getElementById("copyPromptBtn").addEventListener("click", () => {
   });
 });
 
-// --- GÉNÉRER IMAGE ---
-document.getElementById("btn").addEventListener("click", () => {
-  const prompt = document.getElementById("prompt").value.trim();
+// --- GÉNÉRER IMAGE AVEC IA 1 + IA 2 ---
+document.getElementById("btn").addEventListener("click", async () => {
+
+  const userPrompt = document.getElementById("prompt").value.trim();
+  const style = document.getElementById("style").value;
   const loader = document.getElementById("loader");
   const loadingText = document.getElementById("loadingText");
   const img = document.getElementById("result");
-  const style = document.getElementById("style").value;
 
-  if (!prompt) {
+  if (!userPrompt) {
     alert("Écris une description avant de générer !");
     return;
   }
 
   loader.style.display = "block";
   loadingText.style.display = "block";
-  img.crossOrigin = "anonymous";
   img.src = "";
   img.classList.remove("visible");
 
-  const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(style + " " + prompt);
+  try {
 
-  img.onload = () => {
+    /* ---------------------------------------------------------
+       IA 1 — Optimisation automatique du prompt
+    --------------------------------------------------------- */
+    const optimized = await fetch("https://api.prompt-optimizer.ai/v1/optimize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: userPrompt })
+    }).then(r => r.json());
+
+    const finalPrompt = optimized.optimized || userPrompt;
+
+
+    /* ---------------------------------------------------------
+       IA 2 — Génération de l’image
+    --------------------------------------------------------- */
+    const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(style + " " + finalPrompt);
+
+    img.onload = () => {
+      loader.style.display = "none";
+      loadingText.style.display = "none";
+      img.classList.add("visible");
+      document.getElementById("downloadBtn").style.display = "inline-block";
+    };
+
+    img.onerror = () => {
+      loader.style.display = "none";
+      loadingText.style.display = "none";
+      alert("Erreur de génération. Réessaie !");
+      document.getElementById("downloadBtn").style.display = "none";
+    };
+
+    img.crossOrigin = "anonymous";
+    img.src = url;
+
+  } catch (error) {
+    console.error("Erreur FluxIA :", error);
+    alert("Erreur lors de la génération.");
     loader.style.display = "none";
     loadingText.style.display = "none";
-    img.classList.add("visible");
-    // 👉 Le bouton devient cliquable et visible ici
-    document.getElementById("downloadBtn").style.display = "inline-block";
-  };
-
-  img.onerror = () => {
-    loader.style.display = "none";
-    loadingText.style.display = "none";
-    alert("Erreur de génération. Réessaie !");
-    // 👉 On cache le bouton si l’image n’a pas été générée
-    document.getElementById("downloadBtn").style.display = "none";
-  };
-
-  img.src = url;
-});
-// --- TÉLÉCHARGER L’IMAGE ---
-document.getElementById("downloadBtn").addEventListener("click", () => {
-  const img = document.getElementById("result");
-
-  if (!img.src) {
-    alert("Aucune image à télécharger !");
-    return;
   }
-
-  // Créer un lien temporaire pour le téléchargement
-  const link = document.createElement("a");
-  link.href = img.src;
-  link.download = "flux_image.png"; // nom du fichier
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-});
-
-console.log("api.js chargé !");
-
-// --- GÉNÉRER UNE IMAGE IA ---
-document.getElementById("btn").addEventListener("click", () => {
-  const prompt = document.getElementById("prompt").value.trim();
-  const style = document.getElementById("style").value;
-  const loader = document.getElementById("loader");
-  const loadingText = document.getElementById("loadingText");
-  const img = document.getElementById("result");
-
-  if (!prompt) {
-    alert("Écris une description avant de générer !");
-    return;
-  }
-
-  // Afficher le loader
-  loader.style.display = "block";
-  loadingText.style.display = "block";
-  img.src = "";
-  img.classList.remove("visible");
-
-  // Construire l’URL de génération
-  const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(style + " " + prompt);
-
-  // Charger l’image générée
-  img.onload = () => {
-    loader.style.display = "none";
-    loadingText.style.display = "none";
-    img.classList.add("visible");
-    document.getElementById("downloadBtn").style.display = "inline-block";
-  };
-
-  img.onerror = () => {
-    loader.style.display = "none";
-    loadingText.style.display = "none";
-    alert("Erreur de génération. Réessaie !");
-    document.getElementById("downloadBtn").style.display = "none";
-  };
-
-  img.crossOrigin = "anonymous";
-  img.src = url;
 });
 
 // --- TÉLÉCHARGER L’IMAGE ---
@@ -165,5 +128,6 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
   document.body.removeChild(link);
 });
 
+console.log("api.js chargé !");
 
 
