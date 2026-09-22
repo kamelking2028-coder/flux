@@ -204,4 +204,27 @@ img {
     display: block;
   }
 }
+.fluxia-logo {
+  width: 180px;
+  margin: 20px auto;
+  display: block;
+  filter: drop-shadow(0 0 15px #00eaff);
+  animation: fluxGlow 3s ease-in-out infinite;
+}
+
+/* Animation du halo néon */
+@keyframes fluxGlow {
+  0% {
+    filter: drop-shadow(0 0 10px #00eaff)
+            drop-shadow(0 0 20px #00eaff);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px #ff00ff)
+            drop-shadow(0 0 30px #ff00ff);
+  }
+  100% {
+    filter: drop-shadow(0 0 10px #00eaff)
+            drop-shadow(0 0 20px #00eaff);
+  }
+}
 
