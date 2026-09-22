@@ -72,15 +72,16 @@ document.getElementById("btn").addEventListener("click", async () => {
     /* ---------------------------------------------------------
        IA 1 — Optimisation automatique du prompt
     --------------------------------------------------------- */
+ 
+
+    // IA 1 simulée : reformule le prompt localement
+    const optimized = { optimized: userPrompt + ", ultra detailed, high quality, neon lighting" };
+    const finalPrompt = optimized.optimized;
+
+    
     // IA 1 simulée : juste reformule le prompt
       const optimized = { optimized: userPrompt + ", ultra detailed, high quality, neon lighting" };
-   
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: userPrompt })
-    }).then(r => r.json());
-
-    const finalPrompt = optimized.optimized || userPrompt;
+      const finalPrompt = optimized.optimized || userPrompt;
 
 
     /* ---------------------------------------------------------
