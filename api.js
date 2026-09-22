@@ -72,7 +72,9 @@ document.getElementById("btn").addEventListener("click", async () => {
     /* ---------------------------------------------------------
        IA 1 — Optimisation automatique du prompt
     --------------------------------------------------------- */
-    const optimized = await fetch("https://api.prompt-optimizer.ai/v1/optimize", {
+    // IA 1 simulée : juste reformule le prompt
+      const optimized = { optimized: userPrompt + ", ultra detailed, high quality, neon lighting" };
+   
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt: userPrompt })
