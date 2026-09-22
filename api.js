@@ -97,11 +97,11 @@ if (style === "animal") {
   extra = ", realistic photo, natural lighting, studio portrait, no neon, no glitch";
 }
 
+    // Construction finale de l’URL
+const finalUrl = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPrompt + extra);
 
-// Construction finale de l’URL
-
-const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPrompt + ", realistic photo, natural lighting, normal human face, no distortion, no zombie, no hybrid");
- fetch(url)
+// Vérification et génération
+fetch(finalUrl)
   .then(response => {
     if (!response.ok) {
       throw new Error("Erreur serveur Pollinations (" + response.status + ")");
@@ -115,37 +115,27 @@ const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPr
     console.error(error);
     loadingText.textContent = "⚠️ Erreur : impossible de générer l'image.";
   });
-   
-    img.onload = () => {
-      loader.style.display = "none";
-      loadingText.style.display = "none";
-      img.classList.add("visible");
-      document.getElementById("downloadBtn").style.display = "inline-block";
-    };
 
-    img.onerror = () => {
-      loader.style.display = "none";
-      loadingText.style.display = "none";
-      alert("Erreur de génération. Réessaie !");
-      document.getElementById("downloadBtn").style.display = "none";
-    };
-
-    img.crossOrigin = "anonymous";
-    img.src = url;
-
-  } catch (error) {
-    console.error("Erreur FluxIA :", error);
-    alert("Erreur lors de la génération.");
-    loader.style.display = "none";
-    loadingText.style.display = "none";
-  }
-});
+// Gestion du chargement
 img.onload = () => {
   loader.style.display = "none";
   loadingText.style.display = "none";
-  img.classList.add("visible", "vibration"); // vibration activée
+  img.classList.add("visible", "vibration");
   document.getElementById("downloadBtn").style.display = "inline-block";
 };
+
+img.onerror = () => {
+  loader.style.display = "none";
+  loadingText.style.display = "none";
+  alert("Erreur de génération. Réessaie !");
+  document.getElementById("downloadBtn").style.display = "none";
+};
+
+img.crossOrigin = "anonymous";
+
+
+
+
 
 // --- TÉLÉCHARGER L’IMAGE ---
 document.getElementById("downloadBtn").addEventListener("click", () => {
