@@ -82,9 +82,11 @@ document.getElementById("btn").addEventListener("click", async () => {
        IA 2 — Génération de l’image
     --------------------------------------------------------- */
     // Choix du style supplémentaire selon le moteur
+    
 let extra = "";
+// --- Style Animal pur ---
 if (style === "animal") {
-  extra = ", animal, realistic animal photo, no human";
+  extra = ", animal, realistic animal photo, natural lighting, neutral background, no human, no hybrid, no neon, no glow, no cyberpunk, no distortion, high detail, professional wildlife photography";
 } else if (style === "humain") {
   extra = ", human only, normal face, realistic portrait, no zombie, no distortion, no hybrid";
 } else if (style === "cyberpunk") {
@@ -132,10 +134,6 @@ img.onerror = () => {
 };
 
 img.crossOrigin = "anonymous";
-
-
-
-
 
 // --- TÉLÉCHARGER L’IMAGE ---
 document.getElementById("downloadBtn").addEventListener("click", () => {
