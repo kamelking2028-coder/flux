@@ -107,6 +107,14 @@ document.getElementById("btn").addEventListener("click", async () => {
     loadingText.style.display = "none";
   }
 });
+img.onload = () => {
+  loader.style.display = "none";
+  loadingText.style.display = "none";
+  img.classList.add("visible", "vibration"); // vibration activée
+  document.getElementById("downloadBtn").style.display = "inline-block";
+};
+
+
 
 // --- TÉLÉCHARGER L’IMAGE ---
 document.getElementById("downloadBtn").addEventListener("click", () => {
