@@ -102,7 +102,9 @@ if (style === "Animal") {
 }
 
 // Construction finale de l’URL
-const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPrompt + extra);
+
+const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPrompt + ", realistic photo, natural lighting, normal human face, no distortion, no zombie, no hybrid");
+    
     img.onload = () => {
       loader.style.display = "none";
       loadingText.style.display = "none";
