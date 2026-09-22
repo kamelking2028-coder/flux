@@ -10,6 +10,14 @@
   display: block;
   filter: drop-shadow(0 0 15px #00eaff);
 }
+.fluxia-logo {
+  animation: fluxGlow 3s ease-in-out infinite, fluxRotate 20s linear infinite;
+}
+
+@keyframes fluxRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 /* --- FOND GLOBAL --- */
 body {
