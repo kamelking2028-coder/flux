@@ -78,12 +78,6 @@ document.getElementById("btn").addEventListener("click", async () => {
     const optimized = { optimized: userPrompt + ", ultra detailed, high quality, neon lighting" };
     const finalPrompt = optimized.optimized;
 
-    
-    // IA 1 simulée : juste reformule le prompt
-      const optimized = { optimized: userPrompt + ", ultra detailed, high quality, neon lighting" };
-      const finalPrompt = optimized.optimized || userPrompt;
-
-
     /* ---------------------------------------------------------
        IA 2 — Génération de l’image
     --------------------------------------------------------- */
