@@ -81,8 +81,25 @@ document.getElementById("btn").addEventListener("click", async () => {
     /* ---------------------------------------------------------
        IA 2 — Génération de l’image
     --------------------------------------------------------- */
-    const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(style + " " + finalPrompt);
+    // Choix du style supplémentaire selon le moteur
+let extra = "";
 
+if (style === "Animal") {
+  extra = ", animal, realistic animal photo, no human";
+} else if (style === "Humain") {
+  extra = ", human only, no animal, portrait, realistic lighting";
+} else if (style === "Cyberpunk") {
+  extra = ", cyberpunk style, neon lighting, futuristic background";
+} else if (style === "Cartoon") {
+  extra = ", cartoon style, colorful, outlined";
+} else if (style === "Anime") {
+  extra = ", anime style, detailed, vibrant";
+} else if (style === "Realisme") {
+  extra = ", realistic photo, high detail, studio lighting";
+}
+
+// Construction finale de l’URL
+const url = "https://image.pollinations.ai/prompt/" + encodeURIComponent(finalPrompt + extra);
     img.onload = () => {
       loader.style.display = "none";
       loadingText.style.display = "none";
