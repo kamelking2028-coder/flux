@@ -88,112 +88,76 @@ function initFlux() {
     });
   }
 
-  // GÉNÉRER L'IMAGE
-  generateBtn.addEventListener("click", async () => {
-    const userPrompt = promptInput.value.trim();
-    const style = styleInput.value;
+          // GÉNÉRER L'IMAGE
+   
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("generate");
+  const input = document.getElementById("prompt");
+  const img = document.getElementById("result");
+  const loader = document.getElementById("loader");
 
-    if (!userPrompt) {
+  if (!btn || !input || !img || !loader) {
+    console.error("Flux IA : élément HTML introuvable.");
+    return;
+  }
+
+  btn.addEventListener("click", async () => {
+    const prompt = input.value.trim();
+
+    if (!prompt) {
       alert("Écris une description avant de générer !");
       return;
     }
 
-    loader.style.display = "block";
-    loadingText.style.display = "block";
-    loadingText.textContent = "🎨 Génération de l'image en cours…";
-    downloadBtn.style.display = "none";
-
-    img.classList.remove("visible", "vibration");
     img.removeAttribute("src");
-
-    if (currentObjectUrl) {
-      URL.revokeObjectURL(currentObjectUrl);
-      currentObjectUrl = null;
-    }
-
-    const styles = {
-      animal:
-        ", realistic animal photography, natural lighting, neutral background, no humans, high detail",
-
-      humain:
-        ", realistic human portrait, natural facial features, high detail",
-
-      cyberpunk:
-        ", cyberpunk style, futuristic city, neon lighting",
-
-      cartoon:
-        ", cartoon style, colorful, clean outlines",
-
-      anime:
-        ", anime style, detailed illustration, vibrant colors",
-
-      realiste:
-        ", realistic photo, natural lighting, high detail, no distortion"
-    };
-
-    const extra = styles[style] || "";
-    const finalPrompt =
-      `${userPrompt}, ultra detailed, high quality${extra}`;
-
-    const finalUrl =
-      "https://image.pollinations.ai/prompt/" +
-      encodeURIComponent(finalPrompt) +
-      "?model=flux&nologo=true";
+    loader.style.display = "block";
+    btn.disabled = true;
 
     try {
-      console.log("Demande de génération :", finalUrl);
+      const response = await fetch(
+        "https://ia-image.site.je/api.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/x-www-form-urlencoded;charset=UTF-8"
+          },
+          body: new URLSearchParams({
+            prompt: prompt
+          })
+        }
+      );
 
-      const response = await fetch(finalUrl);
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          `Pollinations a répondu avec le statut HTTP ${response.status}.`
+          data.error || `Erreur HTTP ${response.status}`
         );
       }
 
-      const blob = await response.blob();
-
-      if (!blob.size) {
-        throw new Error("Le serveur a renvoyé une réponse vide.");
+      if (data.error) {
+        throw new Error(data.error);
       }
 
-      if (blob.type && !blob.type.startsWith("image/")) {
-        throw new Error(
-          `Réponse inattendue du serveur : ${blob.type}.`
-        );
+      if (!data.image_base64) {
+        throw new Error("Aucune image reçue du serveur.");
       }
 
-      currentObjectUrl = URL.createObjectURL(blob);
+      img.src =
+        `data:${data.mime_type || "image/png"};base64,` +
+        data.image_base64;
 
-      img.onload = () => {
-        hideLoader();
-        loadingText.style.display = "none";
-        img.classList.add("visible", "vibration");
-        downloadBtn.style.display = "inline-block";
-      };
-
-      img.onerror = () => {
-        hideLoader();
-        loadingText.style.display = "block";
-        loadingText.textContent =
-          "⚠️ L'image reçue n'a pas pu être affichée.";
-        console.error("Impossible d'afficher l'image reçue.");
-        downloadBtn.style.display = "none";
-      };
-
-      img.src = currentObjectUrl;
-
-    } catch (error) {
-      console.error("Erreur API de génération :", error);
-
-      hideLoader();
-      loadingText.style.display = "block";
-      loadingText.textContent =
-        "⚠️ " + (error.message || "Connexion à l'API impossible.");
-
-      downloadBtn.style.display = "none";
+    } catch (err) {
+      console.error("Erreur de génération :", err);
+      alert("Erreur API : " + err.message);
+    } finally {
+      loader.style.display = "none";
+      btn.disabled = false;
     }
   });
+});
+
 
   // TÉLÉCHARGER L'IMAGE
   downloadBtn.addEventListener("click", () => {
