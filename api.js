@@ -113,50 +113,46 @@ document.addEventListener("DOMContentLoaded", () => {
     loader.style.display = "block";
     btn.disabled = true;
 
-    try {
-      const response = await fetch(
-        "https://ia-image.site.je/api.php",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/x-www-form-urlencoded;charset=UTF-8"
-          },
-          body: new URLSearchParams({
-            prompt: prompt
-          })
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error || `Erreur HTTP ${response.status}`
-        );
-      }
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      if (!data.image_base64) {
-        throw new Error("Aucune image reçue du serveur.");
-      }
-
-      img.src =
-        `data:${data.mime_type || "image/png"};base64,` +
-        data.image_base64;
-
-    } catch (err) {
-      console.error("Erreur de génération :", err);
-      alert("Erreur API : " + err.message);
-    } finally {
-      loader.style.display = "none";
-      btn.disabled = false;
-    }
+    
+try {
+  const response = await fetch("https://ia-image.site.je/api.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+    },
+    body: new URLSearchParams({
+      prompt: prompt,
+      model: "openjourney"
+    })
   });
-});
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || `Erreur HTTP ${response.status}`);
+  }
+
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  if (!data.image_base64) {
+    throw new Error("Aucune image reçue du serveur.");
+  }
+
+  img.src =
+    `data:${data.mime_type || "image/png"};base64,` +
+    data.image_base64;
+
+} catch (err) {
+  console.error("Erreur API :", err);
+  alert("Erreur API : " + err.message);
+
+} finally {
+  loader.style.display = "none";
+  btn.disabled = false;
+}
+
 
 
   // TÉLÉCHARGER L'IMAGE
