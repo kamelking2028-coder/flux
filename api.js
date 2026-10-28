@@ -3,7 +3,7 @@ console.log("api.js chargé !");
 function initFlux() {
   const promptInput = document.getElementById("prompt");
   const styleInput = document.getElementById("style");
-  const btn = document.getElementById("btn");
+  const generateBtn = document.getElementById("btn");
   const loader = document.getElementById("loader");
   const loadingText = document.getElementById("loadingText");
   const img = document.getElementById("result");
@@ -11,22 +11,34 @@ function initFlux() {
   const copyImageBtn = document.getElementById("copyImageBtn");
   const copyPromptBtn = document.getElementById("copyPromptBtn");
 
-  if (!promptInput || !btn || !loader || !img || !downloadBtn) {
-    console.error("Flux : élément HTML obligatoire introuvable.");
+  if (
+    !promptInput ||
+    !styleInput ||
+    !generateBtn ||
+    !loader ||
+    !loadingText ||
+    !img ||
+    !downloadBtn
+  ) {
+    console.error("Flux : un ou plusieurs éléments HTML sont introuvables.");
     return;
   }
 
-  const API_URL = "https://ia-image-2big.onrender.com/api/image";
   let currentObjectUrl = null;
+
+  function hideLoader() {
+    loader.style.display = "none";
+  }
 
   function showStatus(id) {
     const status = document.getElementById(id);
-    if (!status) return;
 
-    status.style.display = "inline";
-    setTimeout(() => {
-      status.style.display = "none";
-    }, 1500);
+    if (status) {
+      status.style.display = "inline";
+      setTimeout(() => {
+        status.style.display = "none";
+      }, 1500);
+    }
   }
 
   // COPIER L'IMAGE EN BASE64
@@ -42,13 +54,16 @@ function initFlux() {
         canvas.width = img.naturalWidth;
         canvas.height = img.naturalHeight;
 
-        canvas.getContext("2d").drawImage(img, 0, 0);
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
 
-        await navigator.clipboard.writeText(canvas.toDataURL("image/png"));
+        const base64 = canvas.toDataURL("image/png");
+        await navigator.clipboard.writeText(base64);
+
         showStatus("copyImageStatus");
       } catch (error) {
-        console.error(error);
-        alert("Impossible de copier l'image.");
+        console.error("Erreur de copie de l'image :", error);
+        alert("Impossible de copier l'image. Vérifie les autorisations du navigateur.");
       }
     });
   }
@@ -67,45 +82,27 @@ function initFlux() {
         await navigator.clipboard.writeText(prompt);
         showStatus("copyStatus");
       } catch (error) {
-        console.error(error);
+        console.error("Erreur de copie du prompt :", error);
         alert("Impossible de copier le prompt.");
       }
     });
   }
 
   // GÉNÉRER L'IMAGE
-  btn.addEventListener("click", async () => {
-    const prompt = promptInput.value.trim();
+  generateBtn.addEventListener("click", async () => {
+    const userPrompt = promptInput.value.trim();
+    const style = styleInput.value;
 
-    if (!prompt) {
+    if (!userPrompt) {
       alert("Écris une description avant de générer !");
       return;
     }
 
-    if (btn.disabled) return;
-
-    const styles = {
-      animal: ", realistic animal photography, natural lighting, no humans",
-      humain: ", realistic human portrait, natural facial features",
-      cyberpunk: ", cyberpunk style, futuristic background, neon lighting",
-      cartoon: ", cartoon style, colorful, clean outlines",
-      anime: ", anime style, detailed illustration, vibrant colors",
-      realiste: ", realistic photo, natural lighting, high detail"
-    };
-
-    const style = styleInput ? styleInput.value : "realiste";
-    const finalPrompt =
-      prompt + (styles[style] || "") + ", high quality, detailed";
-
-    btn.disabled = true;
     loader.style.display = "block";
-
-    if (loadingText) {
-      loadingText.style.display = "block";
-      loadingText.textContent = "🎨 Génération de l'image en cours…";
-    }
-
+    loadingText.style.display = "block";
+    loadingText.textContent = "🎨 Génération de l'image en cours…";
     downloadBtn.style.display = "none";
+
     img.classList.remove("visible", "vibration");
     img.removeAttribute("src");
 
@@ -114,61 +111,87 @@ function initFlux() {
       currentObjectUrl = null;
     }
 
+    const styles = {
+      animal:
+        ", realistic animal photography, natural lighting, neutral background, no humans, high detail",
+
+      humain:
+        ", realistic human portrait, natural facial features, high detail",
+
+      cyberpunk:
+        ", cyberpunk style, futuristic city, neon lighting",
+
+      cartoon:
+        ", cartoon style, colorful, clean outlines",
+
+      anime:
+        ", anime style, detailed illustration, vibrant colors",
+
+      realiste:
+        ", realistic photo, natural lighting, high detail, no distortion"
+    };
+
+    const extra = styles[style] || "";
+    const finalPrompt =
+      `${userPrompt}, ultra detailed, high quality${extra}`;
+
+    const finalUrl =
+      "https://image.pollinations.ai/prompt/" +
+      encodeURIComponent(finalPrompt) +
+      "?model=flux&nologo=true";
+
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ prompt: finalPrompt })
-      });
+      console.log("Demande de génération :", finalUrl);
+
+      const response = await fetch(finalUrl);
 
       if (!response.ok) {
-        let message = `Erreur HTTP ${response.status}`;
-
-        try {
-          const data = await response.json();
-          message = data.error || message;
-        } catch (_) {}
-
-        throw new Error(message);
+        throw new Error(
+          `Pollinations a répondu avec le statut HTTP ${response.status}.`
+        );
       }
 
       const blob = await response.blob();
 
-      if (!blob.type.startsWith("image/") || !blob.size) {
-        throw new Error("Le serveur n'a pas renvoyé une image valide.");
+      if (!blob.size) {
+        throw new Error("Le serveur a renvoyé une réponse vide.");
+      }
+
+      if (blob.type && !blob.type.startsWith("image/")) {
+        throw new Error(
+          `Réponse inattendue du serveur : ${blob.type}.`
+        );
       }
 
       currentObjectUrl = URL.createObjectURL(blob);
+
+      img.onload = () => {
+        hideLoader();
+        loadingText.style.display = "none";
+        img.classList.add("visible", "vibration");
+        downloadBtn.style.display = "inline-block";
+      };
+
+      img.onerror = () => {
+        hideLoader();
+        loadingText.style.display = "block";
+        loadingText.textContent =
+          "⚠️ L'image reçue n'a pas pu être affichée.";
+        console.error("Impossible d'afficher l'image reçue.");
+        downloadBtn.style.display = "none";
+      };
+
       img.src = currentObjectUrl;
 
-      await img.decode();
-
-      img.classList.add("visible", "vibration");
-      downloadBtn.style.display = "inline-block";
-
     } catch (error) {
-      console.error("Erreur API Flux :", error);
+      console.error("Erreur API de génération :", error);
 
-      if (loadingText) {
-        loadingText.textContent = "⚠️ " + error.message;
-        loadingText.style.display = "block";
-      } else {
-        alert("Erreur API : " + error.message);
-      }
+      hideLoader();
+      loadingText.style.display = "block";
+      loadingText.textContent =
+        "⚠️ " + (error.message || "Connexion à l'API impossible.");
 
-      if (currentObjectUrl) {
-        URL.revokeObjectURL(currentObjectUrl);
-        currentObjectUrl = null;
-      }
-
-      img.removeAttribute("src");
       downloadBtn.style.display = "none";
-
-    } finally {
-      loader.style.display = "none";
-      btn.disabled = false;
     }
   });
 
@@ -182,6 +205,7 @@ function initFlux() {
     const link = document.createElement("a");
     link.href = currentObjectUrl;
     link.download = "flux_image.png";
+
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -195,5 +219,6 @@ if (document.readyState === "loading") {
 } else {
   initFlux();
 }
+
 
 
