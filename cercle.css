@@ -258,3 +258,97 @@ img {
   100% { transform: translate(0); }
 }
 
+/* =====================================
+   FLUXIA PRO - INTERFACE MOBILE MODERNE
+   ===================================== */
+
+@media screen and (max-width: 625px) {
+
+  body {
+    padding: 12px;
+    overflow-x: hidden;
+    background: linear-gradient(160deg, #000428, #001f33);
+  }
+
+  .fluxia-logo {
+    width: 125px;
+    margin: 12px auto;
+  }
+
+  .flux-menu {
+    gap: 12px;
+    padding: 12px 5px;
+    flex-wrap: wrap;
+    border-radius: 14px;
+  }
+
+  .flux-menu a {
+    font-size: 0.88em;
+  }
+
+  h1 {
+    font-size: 1.45em;
+    line-height: 1.35;
+    margin: 22px 5px;
+  }
+
+  #prompt {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 55px;
+    padding: 15px;
+    border-radius: 15px;
+    font-size: 16px;
+  }
+
+  #style {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 12px 0;
+    min-height: 48px;
+  }
+
+  button,
+  #copyPromptBtn,
+  #copyImageBtn,
+  #downloadBtn {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 48px;
+    margin: 8px 0;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+
+  #btn {
+    min-height: 56px;
+    font-size: 19px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #00eaff, #b000ff);
+    color: #001020;
+    box-shadow: 0 0 15px #00eaff;
+  }
+
+  #result {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+  }
+
+  #adHeader,
+  #adFooter {
+    width: 100%;
+    max-width: 100%;
+    margin: 15px auto;
+    overflow: hidden;
+  }
+
+  .loading-text {
+    font-size: 15px;
+  }
+}
+
+
