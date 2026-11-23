@@ -1,3 +1,4 @@
+
 console.log("api.js chargé !");
 
 function initFlux() {
@@ -11,16 +12,9 @@ function initFlux() {
   const copyImageBtn = document.getElementById("copyImageBtn");
   const copyPromptBtn = document.getElementById("copyPromptBtn");
 
-  if (
-    !promptInput ||
-    !styleInput ||
-    !generateBtn ||
-    !loader ||
-    !loadingText ||
-    !img ||
-    !downloadBtn
-  ) {
-    console.error("Flux : un ou plusieurs éléments HTML sont introuvables.");
+  if (!promptInput || !styleInput || !generateBtn ||
+      !loader || !loadingText || !img || !downloadBtn) {
+    console.error("Flux : éléments HTML introuvables.");
     return;
   }
 
@@ -32,63 +26,53 @@ function initFlux() {
 
   function showStatus(id) {
     const status = document.getElementById(id);
-
     if (status) {
       status.style.display = "inline";
-      setTimeout(() => {
-        status.style.display = "none";
-      }, 1500);
+      setTimeout(() => status.style.display = "none", 1500);
     }
   }
 
-  // COPIER L'IMAGE EN BASE64
   if (copyImageBtn) {
     copyImageBtn.addEventListener("click", async () => {
       if (!img.complete || !img.naturalWidth) {
         alert("Aucune image à copier !");
         return;
       }
-
       try {
         const canvas = document.createElement("canvas");
         canvas.width = img.naturalWidth;
         canvas.height = img.naturalHeight;
-
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-
-        const base64 = canvas.toDataURL("image/png");
-        await navigator.clipboard.writeText(base64);
-
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        const blob = await new Promise(resolve =>
+          canvas.toBlob(resolve, "image/png")
+        );
+        await navigator.clipboard.write([
+          new ClipboardItem({ "image/png": blob })
+        ]);
         showStatus("copyImageStatus");
       } catch (error) {
-        console.error("Erreur de copie de l'image :", error);
-        alert("Impossible de copier l'image. Vérifie les autorisations du navigateur.");
+        console.error(error);
+        alert("Impossible de copier l'image.");
       }
     });
   }
 
-  // COPIER LE PROMPT
   if (copyPromptBtn) {
     copyPromptBtn.addEventListener("click", async () => {
       const prompt = promptInput.value.trim();
-
       if (!prompt) {
         alert("Le prompt est vide !");
         return;
       }
-
       try {
         await navigator.clipboard.writeText(prompt);
         showStatus("copyStatus");
       } catch (error) {
-        console.error("Erreur de copie du prompt :", error);
         alert("Impossible de copier le prompt.");
       }
     });
   }
 
-  // GÉNÉRER L'IMAGE
   generateBtn.addEventListener("click", async () => {
     const userPrompt = promptInput.value.trim();
     const style = styleInput.value;
@@ -102,7 +86,7 @@ function initFlux() {
     loadingText.style.display = "block";
     loadingText.textContent = "🎨 Génération de l'image en cours…";
     downloadBtn.style.display = "none";
-
+    generateBtn.disabled = true;
     img.classList.remove("visible", "vibration");
     img.removeAttribute("src");
 
@@ -112,55 +96,39 @@ function initFlux() {
     }
 
     const styles = {
-      animal:
-        ", realistic animal photography, natural lighting, neutral background, no humans, high detail",
-
-      humain:
-        ", realistic human portrait, natural facial features, high detail",
-
-      cyberpunk:
-        ", cyberpunk style, futuristic city, neon lighting",
-
-      cartoon:
-        ", cartoon style, colorful, clean outlines",
-
-      anime:
-        ", anime style, detailed illustration, vibrant colors",
-
-      realiste:
-        ", realistic photo, natural lighting, high detail, no distortion"
+      animal: ", realistic animal photography, natural lighting, neutral background, no humans, high detail",
+      humain: ", realistic human portrait, natural facial features, high detail",
+      cyberpunk: ", cyberpunk style, futuristic city, neon lighting",
+      cartoon: ", cartoon style, colorful, clean outlines",
+      anime: ", anime style, detailed illustration, vibrant colors",
+      realiste: ", realistic photo, natural lighting, high detail, no distortion"
     };
 
-    const extra = styles[style] || "";
     const finalPrompt =
-      `${userPrompt}, ultra detailed, high quality${extra}`;
-
-    const finalUrl =
-      "https://image.pollinations.ai/prompt/" +
-      encodeURIComponent(finalPrompt) +
-      "?model=flux&nologo=true";
+      `${userPrompt}, ultra detailed, high quality${styles[style] || ""}`;
 
     try {
-      console.log("Demande de génération :", finalUrl);
-
-      const response = await fetch(finalUrl);
+      const response = await fetch(
+        "https://mute-cell-5c4e.kamelking2028.workers.dev/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: finalPrompt })
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(
-          `Pollinations a répondu avec le statut HTTP ${response.status}.`
-        );
+        let message = `Erreur HTTP ${response.status}`;
+        try {
+          const data = await response.json();
+          message = data.error || message;
+        } catch (_) {}
+        throw new Error(message);
       }
 
       const blob = await response.blob();
-
-      if (!blob.size) {
-        throw new Error("Le serveur a renvoyé une réponse vide.");
-      }
-
-      if (blob.type && !blob.type.startsWith("image/")) {
-        throw new Error(
-          `Réponse inattendue du serveur : ${blob.type}.`
-        );
+      if (!blob.size || !blob.type.startsWith("image/")) {
+        throw new Error("La réponse ne contient pas une image valide.");
       }
 
       currentObjectUrl = URL.createObjectURL(blob);
@@ -175,9 +143,7 @@ function initFlux() {
       img.onerror = () => {
         hideLoader();
         loadingText.style.display = "block";
-        loadingText.textContent =
-          "⚠️ L'image reçue n'a pas pu être affichée.";
-        console.error("Impossible d'afficher l'image reçue.");
+        loadingText.textContent = "⚠️ L'image reçue n'a pas pu être affichée.";
         downloadBtn.style.display = "none";
       };
 
@@ -185,27 +151,23 @@ function initFlux() {
 
     } catch (error) {
       console.error("Erreur API de génération :", error);
-
       hideLoader();
       loadingText.style.display = "block";
-      loadingText.textContent =
-        "⚠️ " + (error.message || "Connexion à l'API impossible.");
-
+      loadingText.textContent = "⚠️ " + (error.message || "Connexion à l'API impossible.");
       downloadBtn.style.display = "none";
+    } finally {
+      generateBtn.disabled = false;
     }
   });
 
-  // TÉLÉCHARGER L'IMAGE
   downloadBtn.addEventListener("click", () => {
     if (!currentObjectUrl || !img.naturalWidth) {
       alert("Aucune image à télécharger !");
       return;
     }
-
     const link = document.createElement("a");
     link.href = currentObjectUrl;
     link.download = "flux_image.png";
-
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -219,6 +181,3 @@ if (document.readyState === "loading") {
 } else {
   initFlux();
 }
-
-
-
